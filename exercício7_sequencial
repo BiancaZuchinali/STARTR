@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int inicio= 1000; 
+    int resto = (inicio % 11); 
+    int primeiro = inicio + (11 - resto + 5) % 11;
+    int quinto = primeiro + 4 * 11;
+
+    cout << "O quinto número maior que 1000 cuja divisão por 11 tem resto 5 é: " << quinto <<endl;
+
+    return 0;
+}
