@@ -1,0 +1,20 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int count = 0; 
+    int num = 1001; 
+
+    while (count < 5) {
+        if (num % 11 == 5) { 
+            count++;
+        }
+        if (count < 5) {
+            num++; 
+        }
+    }
+    
+        cout << "O quinto número maior que 1000 cuja divisão por 11 tem resto 5 é: " << num << endl;
+
+    return 0;
+}
