@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+   float chico = 1.50, ze = 1.10;
+   float taxa_c = 0.02, taxa_z = 0.03; 
+   int anos = 0;
+
+   while (ze <= chico) {
+       chico += taxa_c;
+       ze += taxa_z;
+       anos++;
+   }
+
+   cout << "Foram necessários " << anos << " anos para que Zé ficasse maior que Chico" << endl;
+}
