@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    for (int num = 1000; num <= 9999; ++num) {
+        int parte1 = num / 100;  
+        int parte2 = num % 100; 
+
+        int soma = parte1 + parte2;
+        int quadrado = soma * soma;
+
+        if (quadrado == num) {
+            cout << num<< endl;
+        }
+    }
+}
