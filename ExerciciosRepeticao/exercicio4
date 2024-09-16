@@ -1,0 +1,36 @@
+#include <iostream>
+#include <string>
+#include <cstdlib> 
+#include <ctime> 
+#include <iomanip>
+using namespace std;
+
+struct Cliente {
+    string nome;
+    float saldo;
+    float bonus;
+};
+
+int main() {
+    string nomes[] = {"Ana", "Pedro", "Maria", "Luca", "Luana", "Carlos", "Bianca", "João", "Laura", "Paulo"};
+    Cliente clientes[150];
+    srand(time(0)); 
+    for (int i = 0; i < 150; i++) {
+        clientes[i].nome = nomes[rand() % 10] + " " + to_string(i+1); 
+        clientes[i].saldo = 10 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2500 - 10)));
+    }
+
+    for (int i = 0; i < 150; i++){
+        if(clientes[i].saldo < 500){
+            clientes[i].bonus = clientes[i].saldo * 0.1;
+        }else{
+            clientes[i].bonus = clientes[i].saldo * 0.2;
+        }
+    }
+    for (int i = 0; i < 150; i++) {
+        cout << fixed << setprecision(2);
+        cout << "Cliente: " << clientes[i].nome << ", Saldo: R$ " << clientes[i].saldo << ", Bonus: R$"<<clientes[i].bonus << endl;
+    }
+    
+}
+
