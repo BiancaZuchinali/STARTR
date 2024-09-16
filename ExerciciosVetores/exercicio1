@@ -52,6 +52,4 @@ int main() {
     pos_impares(v, size);
     pos_pares(v, size);
     inverso(v, size);
-
-    return 0;
 }
