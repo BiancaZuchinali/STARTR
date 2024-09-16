@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string nomesMeses[12] = {
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    };
+    
+    int diasMeses[12][2] = {
+        {1, 31}, {2, 29}, {3, 31}, {4, 30}, {5, 31}, {6, 30},
+        {7, 31}, {8, 31}, {9, 30}, {10, 31}, {11, 30}, {12, 31}
+    };
+
+    int numeroMes;
+    cout << "Digite o número do mês (1-12): " << endl;
+    cin >> numeroMes;
+    int indiceMes = numeroMes - 1;
+    if(numeroMes > 12){
+        cout<< "Entrada invalida!"<<endl;
+    }
+
+    cout << "Mês: " << nomesMeses[indiceMes] <<endl;
+    cout << "Quantidade de dias: " << diasMeses[indiceMes][1] << endl;
+}
