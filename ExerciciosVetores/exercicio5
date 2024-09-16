@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+
+const int SIZE = 20; 
+
+void leitura(int v[]) {
+    cout << "Forneça os " << SIZE << " valores do vetor: " << endl;
+    for (int i = 0; i < SIZE; i++) {
+        cin >> v[i];
+    }
+}
+
+void soma(int v[]) {
+    int soma = 0;
+    for (int i = 0; i < SIZE; i++) {
+        soma += v[i];
+    }
+    cout << "A soma dos valores do vetor é: " << soma << endl;
+}
+
+void maior(int v[]) {
+    int maior = v[0];
+    for (int i = 1; i < SIZE; i++) {
+        if (v[i] > maior) {
+            maior = v[i];
+        }
+    }
+    cout << "O maior valor do vetor é: " << maior << endl;
+}
+
+void qnt_pares(int v[]) {
+    int qnt = 0;
+    for (int i = 0; i < SIZE; i++) {
+        if (v[i] % 2 == 0) {
+            qnt++;
+        }
+    }
+    cout << "A quantidade de valores pares no vetor é: " << qnt << endl;
+}
+
+int main() {
+    int v[SIZE];  
+    leitura(v);   
+    soma(v);      
+    maior(v);    
+    qnt_pares(v); 
+}
