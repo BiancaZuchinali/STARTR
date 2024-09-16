@@ -1,0 +1,43 @@
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+int main(){
+  int n;
+  cout<< "Digite o tamanho de sua matriz quadrada: "<< endl;
+     cin>> n;  
+     int matriz[n][n];
+     int valor = n*n;
+     int qnt_negativos = 0;
+     cout<< "digite os " << valor<< " valores da matriz: "<< endl;
+     for(int i = 0; i < n; i++){
+         for(int j = 0; j < n; j++){
+             cout<<valor<<": ";
+             cin>> matriz[i][j];
+             valor--;
+             if(matriz[i][j] < 0){
+                    qnt_negativos++;
+             }
+         }
+     }
+
+    cout<< endl;
+    cout << "A matriz é formada é: " << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << setw(5) << matriz[i][j] << " ";  
+        }
+        cout << endl;
+    }
+    cout<<endl;
+     cout<< "Os valores que compoem a diagonal principal da matriz são: "<< endl;
+     for(int i = 0; i < n; i++){
+         cout<< matriz[i][i]<< " ";
+     }
+    cout<< endl;
+    cout << endl;
+     if(qnt_negativos > 0){
+         cout<< "A matriz possui "<< qnt_negativos <<" valores negativos."<< endl;
+}
+}
