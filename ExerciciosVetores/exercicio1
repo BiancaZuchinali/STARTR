@@ -45,8 +45,7 @@ void inverso(int v[], int size) {
 }
 
 int main() {
-    const int size = 10;
-    int v[size];
+    int v[10];
 
     leitura(v, size);
     impares(v, size);
