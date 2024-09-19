@@ -34,7 +34,7 @@ public:
 };
 
 class Aplicacao {
-  private:
+private:
     Livro** livros; 
     int quantidade;
     int capacidade;
@@ -66,19 +66,27 @@ public:
 
     string listarLivros() {
         string lista = "";
-        for (int i = 0; i < quantidade; i++) {
+        if(quantidade == 0){
+            lista = "Não há livros cadastrados";
+        }else{
+          for (int i = 0; i < quantidade; i++) {
             lista += livros[i]->toString() + "\n"; 
+          }
         }
         return lista;
     }
 
     string buscarLivro(string titulo) {
-        for (int i = 0; i < quantidade; i++) {
-            if (livros[i]->getTitulo() == titulo) {
-                return livros[i]->toString(); 
-            }
-        }
-        return "Livro não encontrado"; 
+          if(quantidade == 0){
+               return "Não há livros cadastrados";
+          }else{
+               for (int i = 0; i < quantidade; i++) {
+                    if (livros[i]->getTitulo() == titulo) {
+                    return livros[i]->toString(); 
+                    }
+               }
+               return "Livro não encontrado"; 
+           }   
     }
 
     ~Aplicacao() {
@@ -133,9 +141,7 @@ int main() {
             default:
                 cout << "Opção inválida. Tente novamente." << endl;
                 break;
-        }
-    }
-
+            }
+          }
+     }
 }
-}
-
