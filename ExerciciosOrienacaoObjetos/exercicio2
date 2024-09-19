@@ -71,6 +71,4 @@ int main() {
     app.adicionarPessoa("Eduardo", 35);
 
     app.listarPessoas();
-
-    return 0;
 }
