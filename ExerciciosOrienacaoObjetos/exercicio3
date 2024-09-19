@@ -1,1 +1,141 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Livro {
+private:
+    string titulo;
+    string autor;
+    double preco;
+
+public:
+    Livro(string titulo, string autor, double preco) {
+        this->titulo = titulo;
+        this->autor = autor;
+        this->preco = preco;
+    }
+
+    string getTitulo() {
+        return titulo;
+    }
+
+    string getAutor() {
+        return autor;
+    }
+
+    double getPreco() {
+        return preco;
+    }
+
+    string toString() {
+        return "Título: " + getTitulo() + " Autor: " + getAutor() + " Preço: " + to_string(preco);
+    }
+};
+
+class Aplicacao {
+  private:
+    Livro** livros; 
+    int quantidade;
+    int capacidade;
+
+    void redimensionar() {
+        capacidade += 5;
+        Livro** livrosTemp = new Livro*[capacidade];
+        for (int i = 0; i < quantidade; i++) {
+            livrosTemp[i] = livros[i]; 
+        }
+        delete[] livros; 
+        livros = livrosTemp; 
+    }
+
+public:
+    Aplicacao() {
+        capacidade = 5;
+        quantidade = 0; 
+        livros = new Livro*[capacidade]; 
+    }
+
+    void adicionarLivro(Livro livro) {
+        if (quantidade == capacidade) {
+            redimensionar(); 
+        }
+        livros[quantidade] = new Livro(livro); 
+        quantidade++;
+    }
+
+    string listarLivros() {
+        string lista = "";
+        for (int i = 0; i < quantidade; i++) {
+            lista += livros[i]->toString() + "\n"; 
+        }
+        return lista;
+    }
+
+    string buscarLivro(string titulo) {
+        for (int i = 0; i < quantidade; i++) {
+            if (livros[i]->getTitulo() == titulo) {
+                return livros[i]->toString(); 
+            }
+        }
+        return "Livro não encontrado"; 
+    }
+
+    ~Aplicacao() {
+        for (int i = 0; i < quantidade; i++) {
+            delete livros[i]; 
+        }
+        delete[] livros; 
+    }
+};
+
+int main() {
+    Aplicacao app;
+    int opcao = 0; 
+     
+    while (opcao != 4) {
+        cout << "Selecione a ação desejada: " << endl;
+        cout << "1 - Adicionar livro" << endl;
+        cout << "2 - Listar livros" << endl;
+        cout << "3 - Buscar livro" << endl;
+        cout << "4 - Sair" << endl;
+        cin >> opcao;
+
+        switch (opcao) {
+            case 1: {
+                string titulo, autor;
+                double preco;
+                cout << "Digite o título do livro: ";
+                cin.ignore(); 
+                getline(cin, titulo); 
+                cout << "Digite o autor do livro: ";
+                getline(cin, autor); 
+                cout << "Digite o preço do livro: ";
+                cin >> preco;
+                Livro livro(titulo, autor, preco);
+                app.adicionarLivro(livro);
+                break;
+            }
+            case 2:{
+                cout << app.listarLivros() << endl;
+                break;}
+            case 3: {
+                string titulo;
+                cout << "Digite o título do livro: ";
+                cin.ignore(); 
+                getline(cin, titulo); 
+                cout << app.buscarLivro(titulo) << endl;
+                break;
+            }
+            case 4:{
+                cout << "Saindo..." << endl;
+                break;
+            default:
+                cout << "Opção inválida. Tente novamente." << endl;
+                break;
+        }
+    }
+
+}
+}
 
