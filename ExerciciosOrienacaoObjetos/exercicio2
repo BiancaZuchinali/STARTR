@@ -1,0 +1,76 @@
+#include<iostream>
+#include<vector>
+
+using namespace std;
+
+class Pessoa{
+     private:
+        string nome;
+        int idade;
+     public:
+        Pessoa(){
+            nome = "";
+            idade = 0;
+        }
+        string getNome(){
+            return nome;
+        }
+        int getIdade(){
+            return idade;
+        }
+        void setNome(string nome){
+            this->nome = nome;
+        }
+        void setIdade(int idade){
+               this->idade = idade;
+        }
+        string toString(){
+            return "Nome: " + getNome() + " | Idade: " + to_string(getIdade());
+        }
+
+};
+
+class Aplicacao {
+private:
+    Pessoa* pessoas;  
+    int quantidade;   
+    int tamanho;      
+
+public:
+    Aplicacao(int tamanho) {
+        this->tamanho = tamanho;
+        pessoas = new Pessoa[tamanho]; 
+        quantidade = 0;      
+    }           
+
+    void adicionarPessoa(string nome, int idade) {
+        if (quantidade < tamanho) {
+            pessoas[quantidade].setNome(nome);
+            pessoas[quantidade].setIdade(idade);
+            quantidade++;
+        } else {
+            cout << "Erro: O vetor de pessoas está cheio!" << endl;
+        }
+    }
+
+    void listarPessoas() {
+        for (int i = 0; i < quantidade; i++) {
+            cout << pessoas[i].toString() << endl;
+        }
+    }
+
+};
+
+int main() {
+    Aplicacao app(5); 
+
+    app.adicionarPessoa("Alice", 30);
+    app.adicionarPessoa("Bob", 25);
+    app.adicionarPessoa("Carlos", 28);
+    app.adicionarPessoa("Diana", 22);
+    app.adicionarPessoa("Eduardo", 35);
+
+    app.listarPessoas();
+
+    return 0;
+}
