@@ -1,0 +1,422 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Livro {
+private:
+    string titulo;
+    string autor;
+    int anoPublicacao;
+    bool disponivel;
+
+public:
+    Livro(string titulo, string autor, int anoPublicacao, bool disponivel) {
+        this->titulo = titulo;
+        this->autor = autor;
+        this->anoPublicacao = anoPublicacao;
+        this->disponivel = disponivel;
+    }
+
+    string getTitulo() {
+        return titulo;
+    }
+
+    string getAutor() {
+        return autor;
+    }
+
+    int getAnoPublicacao() {
+        return anoPublicacao;
+    }
+
+    bool getDisponivel() {
+        return disponivel;
+    }
+
+    void setDisponivel(bool disponivel) {
+        this->disponivel = disponivel;
+    }
+
+    string exibirDetalhes() {
+        return "Titulo: " + getTitulo() + "\nAutor: " + getAutor() + "\nAno de publicacao: " + to_string(getAnoPublicacao()) + "\nDisponivel: " + (getDisponivel() ? "Sim" : "Não");
+    }
+};
+
+class Usuario {
+private:
+    string nome;
+    int id;
+    Livro** livrosEmprestados;
+    int quantidadeLivrosEmprestados;
+    int capacidadeLivrosEmprestados;
+
+    void redimensionarLivrosEmprestados() {
+        capacidadeLivrosEmprestados += 5;
+        Livro** temp = new Livro*[capacidadeLivrosEmprestados];
+        for (int i = 0; i < quantidadeLivrosEmprestados; i++) {
+            temp[i] = livrosEmprestados[i];
+        }
+        delete[] livrosEmprestados;
+        livrosEmprestados = temp;
+    }
+
+public:
+    Usuario(string nome, int id) {
+        this->nome = nome;
+        this->id = id;
+        this->capacidadeLivrosEmprestados = 5;
+        this->quantidadeLivrosEmprestados = 0;
+        this->livrosEmprestados = new Livro*[capacidadeLivrosEmprestados];
+    }
+
+    string getNome() {
+        return nome;
+    }
+
+    void setNome(string nome) {
+        this->nome = nome;
+    }
+
+    int getId() {
+        return id;
+    }
+
+    void setId(int id) {
+        this->id = id;
+    }
+
+    void adicionarLivroEmprestado(Livro* livro) {
+        if (quantidadeLivrosEmprestados == capacidadeLivrosEmprestados) {
+            redimensionarLivrosEmprestados();
+        }
+        livrosEmprestados[quantidadeLivrosEmprestados] = livro;
+        quantidadeLivrosEmprestados++;
+    }
+
+    Livro* removerLivroEmprestado(string titulo) {
+        for (int i = 0; i < quantidadeLivrosEmprestados; i++) {
+            if (livrosEmprestados[i]->getTitulo() == titulo) {
+                Livro* livroRemovido = livrosEmprestados[i];
+                for (int j = i; j < quantidadeLivrosEmprestados - 1; j++) {
+                    livrosEmprestados[j] = livrosEmprestados[j + 1];
+                }
+                quantidadeLivrosEmprestados--;
+                return livroRemovido;
+            }
+        }
+        return nullptr;
+    }
+
+    void exibirLivrosEmprestados() {
+        if (quantidadeLivrosEmprestados == 0) {
+            cout << "Nenhum livro emprestado." << endl;
+        } else {
+            cout << "Livros emprestados: " << endl;
+            for (int i = 0; i < quantidadeLivrosEmprestados; i++) {
+                cout << livrosEmprestados[i]->getTitulo() << endl;
+            }
+        }
+    }
+};
+
+class Biblioteca {
+private:
+    Livro** livros;
+    string nome;
+    Usuario** usuarios;
+    int quantidadeL;
+    int quantidadeU;
+    int capacidadeL;
+    int capacidadeU;
+
+    void redimensionarLivros() {
+        capacidadeL += 5;
+        Livro** livrosTemp = new Livro*[capacidadeL];
+        for (int i = 0; i < quantidadeL; i++) {
+            livrosTemp[i] = livros[i];
+        }
+        delete[] livros;
+        livros = livrosTemp;
+    }
+
+    void redimensionarUsuarios() {
+        capacidadeU += 5;
+        Usuario** usuariosTemp = new Usuario*[capacidadeU];
+        for (int i = 0; i < quantidadeU; i++) {
+            usuariosTemp[i] = usuarios[i];
+        }
+        delete[] usuarios;
+        usuarios = usuariosTemp;
+    }
+
+public:
+    Biblioteca() {
+        capacidadeL = 5;
+        capacidadeU = 5;
+        quantidadeL = 0;
+        quantidadeU = 0;
+        livros = new Livro*[capacidadeL];
+        usuarios = new Usuario*[capacidadeU];
+    }
+
+    void setNome(string nome) {
+        this->nome = nome;
+    }
+
+    string getNome() {
+        return nome;
+    }
+
+    void adicionarLivro(Livro livro) {
+        if (quantidadeL == capacidadeL) {
+            redimensionarLivros();
+        }
+        livros[quantidadeL] = new Livro(livro);
+        quantidadeL++;
+        cout << "Livro adicionado: " << livro.getTitulo() << endl;
+    }
+
+    void adicionarUsuario(Usuario usuario) {
+        if (quantidadeU == capacidadeU) {
+            redimensionarUsuarios();
+        }
+        usuarios[quantidadeU] = new Usuario(usuario);
+        quantidadeU++;
+        cout << "Usuário adicionado: " << usuario.getNome() << endl;
+    }
+
+    Usuario* buscarUsuario(int id) {
+        for (int i = 0; i < quantidadeU; i++) {
+            if (usuarios[i]->getId() == id) {
+                return usuarios[i];
+            }
+        }
+        return nullptr;
+    }
+
+    Livro* buscarLivroDisponivel(string titulo) {
+        for (int i = 0; i < quantidadeL; i++) {
+            if (livros[i]->getTitulo() == titulo && livros[i]->getDisponivel()) {
+                return livros[i];
+            }
+        }
+        return nullptr;
+    }
+
+    void removerUsuario(int id) {
+        bool encontrado = false;
+        for (int i = 0; i < quantidadeU; i++) {
+            if (usuarios[i]->getId() == id) {
+                delete usuarios[i];
+                for (int j = i; j < quantidadeU - 1; j++) {
+                    usuarios[j] = usuarios[j + 1];
+                }
+                quantidadeU--;
+                encontrado = true;
+                cout << "Usuário removido." << endl;
+                break;
+            }
+        }
+        if (!encontrado) {
+            cout << "Usuário não encontrado." << endl;
+        }
+    }
+
+    void removerLivro(string titulo) {
+        bool encontrado = false;
+        for (int i = 0; i < quantidadeL; i++) {
+            if (livros[i]->getTitulo() == titulo) {
+                delete livros[i];
+                for (int j = i; j < quantidadeL - 1; j++) {
+                    livros[j] = livros[j + 1];
+                }
+                quantidadeL--;
+                encontrado = true;
+                cout << "Livro removido." << endl;
+                break;
+            }
+        }
+        if (!encontrado) {
+            cout << "Livro não encontrado." << endl;
+        }
+    }
+
+    void emprestarLivro(int idUsuario, string titulo) {
+        Usuario* usuario = buscarUsuario(idUsuario);
+        Livro* livro = buscarLivroDisponivel(titulo);
+
+        if (usuario != nullptr && livro != nullptr) {
+            livro->setDisponivel(false);
+            usuario->adicionarLivroEmprestado(livro);
+            cout << "Livro emprestado com sucesso!" << endl;
+        } else {
+            cout << "Usuário ou livro não encontrado, ou livro não disponível." << endl;
+        }
+    }
+
+    void devolverLivro(int idUsuario, string titulo) {
+        Usuario* usuario = buscarUsuario(idUsuario);
+        if (usuario != nullptr) {
+            Livro* livro = usuario->removerLivroEmprestado(titulo);
+            if (livro != nullptr) {
+                livro->setDisponivel(true);
+                cout << "Livro devolvido com sucesso!" << endl;
+            } else {
+                cout << "Livro não encontrado nos livros emprestados do usuário." << endl;
+            }
+        } else {
+            cout << "Usuário não encontrado." << endl;
+        }
+    }
+
+    string exibirLivrosDisponiveis() {
+        string lista = "";
+        bool algumDisponivel = false;
+        for (int i = 0; i < quantidadeL; i++) {
+            if (livros[i]->getDisponivel()) {
+                lista += livros[i]->exibirDetalhes() + "\n";
+                algumDisponivel = true;
+            }
+        }
+        if (!algumDisponivel) {
+            lista = "Não há livros disponíveis.";
+        }
+        return lista;
+    }
+
+    ~Biblioteca() {
+        for (int i = 0; i < quantidadeL; i++) {
+            delete livros[i];
+        }
+        delete[] livros;
+
+        for (int i = 0; i < quantidadeU; i++) {
+            delete usuarios[i];
+        }
+        delete[] usuarios;
+    }
+};
+
+int main() {
+    Biblioteca biblio;
+    string nome;
+    cout << "Digite o nome da biblioteca: ";
+    cin >> nome;
+    biblio.setNome(nome);
+
+    int opcao = 0;
+
+    while (opcao != 7) {
+        cout << "\n--- Menu da Biblioteca " << biblio.getNome() << " ---" << endl;
+        cout << "1. Adicionar Livro" << endl;
+        cout << "2. Adicionar Usuário" << endl;
+        cout << "3. Emprestar Livro" << endl;
+        cout << "4. Devolver Livro" << endl;
+        cout << "5. Exibir Livros Disponíveis" << endl;
+        cout << "6. Remover Livro ou Usuário" << endl;
+        cout << "7. Sair" << endl;
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
+
+        switch (opcao) {
+            case 1: {
+                string titulo, autor;
+                int anoPublicacao;
+                bool disponivel = true;
+
+                cout << "Digite o título do livro: ";
+                cin.ignore();
+                getline(cin, titulo);
+                cout << "Digite o autor do livro: ";
+                getline(cin, autor);
+                cout << "Digite o ano de publicação: ";
+                cin >> anoPublicacao;
+
+                Livro novoLivro(titulo, autor, anoPublicacao, disponivel);
+                biblio.adicionarLivro(novoLivro);
+                break;
+            }
+
+            case 2: {
+                string nomeUsuario;
+                int idUsuario;
+
+                cout << "Digite o nome do usuário: ";
+                cin.ignore();
+                getline(cin, nomeUsuario);
+                cout << "Digite o ID do usuário: ";
+                cin >> idUsuario;
+
+                Usuario novoUsuario(nomeUsuario, idUsuario);
+                biblio.adicionarUsuario(novoUsuario);
+                break;
+            }
+
+            case 3: {
+                int idUsuario;
+                string tituloLivro;
+
+                cout << "Digite o ID do usuário: ";
+                cin >> idUsuario;
+                cout << "Digite o título do livro a ser emprestado: ";
+                cin.ignore();
+                getline(cin, tituloLivro);
+
+                biblio.emprestarLivro(idUsuario, tituloLivro);
+                break;
+            }
+
+            case 4: {
+                int idUsuario;
+                string tituloLivro;
+
+                cout << "Digite o ID do usuário: ";
+                cin >> idUsuario;
+                cout << "Digite o título do livro a ser devolvido: ";
+                cin.ignore();
+                getline(cin, tituloLivro);
+
+                biblio.devolverLivro(idUsuario, tituloLivro);
+                break;
+            }
+
+            case 5: {
+                cout << "\n--- Livros Disponíveis ---" << endl;
+                cout << biblio.exibirLivrosDisponiveis();
+                break;
+            }
+
+            case 6: {
+                int subopcao;
+                cout << "Deseja remover: 1. Livro ou 2. Usuário? ";
+                cin >> subopcao;
+
+                if (subopcao == 1) {
+                    string tituloLivro;
+                    cout << "Digite o título do livro a ser removido: ";
+                    cin.ignore();
+                    getline(cin, tituloLivro);
+                    biblio.removerLivro(tituloLivro);
+                } else if (subopcao == 2) {
+                    int idUsuario;
+                    cout << "Digite o ID do usuário a ser removido: ";
+                    cin >> idUsuario;
+                    biblio.removerUsuario(idUsuario);
+                }
+                break;
+            }
+
+            case 7: {
+                cout << "Saindo do sistema..." << endl;
+                break;
+            }
+
+            default: {
+                cout << "Opcao inválida. Tente novamente." << endl;
+                break;
+            }
+        }
+    }
+}
+
